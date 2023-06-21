@@ -15,17 +15,19 @@ import sg.edu.nus.iss.paf21_jul2023.service.CustomerService;
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
-    
+
     @Autowired
     CustomerService custSvc;
 
     @GetMapping
     public List<Customer> getAllCustomers() {
+
         return custSvc.getAllCustomers();
     }
 
     @GetMapping("/limit")
-    public List<Customer> getAllCustomersWithLimitAndOffset(@RequestParam("limit") int limit, @RequestParam("offset") int offset) {
+    public List<Customer> getAllCustomersWithLimitAndOffset(@RequestParam("limit") int limit,
+            @RequestParam("offset") int offset) {
         return custSvc.getallCustomersWithLimitAndOffset(limit, offset);
     }
 
@@ -33,5 +35,5 @@ public class CustomerController {
     public Customer getCustomr(@PathVariable("cust-Id") int custId) {
         return custSvc.getCustomerById(custId);
     }
-    
+
 }
