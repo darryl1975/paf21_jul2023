@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import sg.edu.nus.iss.paf21_jul2023.exception.ResourceNotFoundException;
 import sg.edu.nus.iss.paf21_jul2023.model.Room;
 import sg.edu.nus.iss.paf21_jul2023.repo.RoomRepository;
 
@@ -23,7 +24,13 @@ public class RoomService {
     }
 
     public List<Room> findAll() {
-        return rmRepo.getAllRooms();
+        List<Room> rooms = rmRepo.getAllRooms();
+
+        // if (rooms.isEmpty()) {
+        //                 throw new ResourceNotFoundException("No Room Record exist");
+        // }
+
+        return rooms;
     }
 
     public Room findById(int id) {

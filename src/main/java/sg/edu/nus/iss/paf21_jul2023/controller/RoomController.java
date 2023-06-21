@@ -3,6 +3,8 @@ package sg.edu.nus.iss.paf21_jul2023.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sg.edu.nus.iss.paf21_jul2023.exception.ResourceNotFoundException;
 import sg.edu.nus.iss.paf21_jul2023.model.Room;
 import sg.edu.nus.iss.paf21_jul2023.service.RoomService;
 
@@ -23,6 +26,8 @@ import sg.edu.nus.iss.paf21_jul2023.service.RoomService;
 public class RoomController {
     @Autowired
     RoomService rmSvc;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RoomController.class);
 
     @GetMapping("/count")
     public ResponseEntity<Integer> getRoomCount() {
@@ -38,7 +43,7 @@ public class RoomController {
         rooms = rmSvc.findAll();
 
         if (rooms.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("No Room Record exist");
         } else {
             return ResponseEntity.ok().body(rooms);
         }
@@ -50,11 +55,10 @@ public class RoomController {
     public ResponseEntity<Room> getRoomById(@PathVariable("room-id") int roomId) {
         Room room = rmSvc.findById(roomId);
 
-        if (room == null) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok().body(room);
-        }
+        LOGGER.info(room.toString());
+
+        return ResponseEntity.ok().body(room);
+
     }
 
     @PostMapping
